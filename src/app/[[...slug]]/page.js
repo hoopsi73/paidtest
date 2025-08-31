@@ -13,16 +13,22 @@ export default async function Page({ params }) {
 	};
 
 	try {
-	const storyblokApi = getStoryblokApi();
-	let { data } = await storyblokApi.get(`cdn/stories/${fullSlug}`, sbParams);
+		const storyblokApi = getStoryblokApi();
+		let { data } = await storyblokApi.get(`cdn/stories/${fullSlug}`, sbParams);
 
-	return <StoryblokStory story={data.story} />;
+		return <StoryblokStory story={data.story} />;
 	} catch (error) {
 		console.error('Storyblok API Error:', error);
 		return (
 			<div style={{ padding: '20px', textAlign: 'center' }}>
 				<h1>Content Loading Error</h1>
-				<p>Unable to load content from Storyblok. Please check your access token.</p>
+				<p>Unable to load content from Storyblok. Please check your access token and network connection.</p>
+				<details style={{ marginTop: '10px', textAlign: 'left' }}>
+					<summary>Error Details</summary>
+					<pre style={{ background: '#f5f5f5', padding: '10px', borderRadius: '4px' }}>
+						{error.message || JSON.stringify(error, null, 2)}
+					</pre>
+				</details>
 			</div>
 		);
 	}
